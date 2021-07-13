@@ -2,10 +2,10 @@ package com.aidan.gifsearchengine;
 
 import org.json.JSONObject;
 
-public class ResponseEvent {
+public class ResultEvent {
     JSONObject jsonObject;
 
-    public ResponseEvent(JSONObject jsonObject) {
+    public ResultEvent(JSONObject jsonObject) {
         this.jsonObject = jsonObject;
     }
 

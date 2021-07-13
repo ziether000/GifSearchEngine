@@ -8,7 +8,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,7 +39,7 @@ public class APIService {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        EventBus.getDefault().post(new ResponseEvent(response));
+                        EventBus.getDefault().post(new ResultEvent(response));
                     }
                 }, new Response.ErrorListener() {
 
@@ -50,7 +49,6 @@ public class APIService {
                     }
                 });
         queue.add(jsonObjectRequest);
-
     }
 
     public void getTrending() {
@@ -58,8 +56,29 @@ public class APIService {
         apiCall(url);
     }
 
-    public void searchGIF(String keyword) {
-        String url = "";
+    public void searchGIF(String keyword, int limit) {
+        String url = domain+"/search?api_key="+API_KEY+"&q="+keyword+"&limit="+limit;
         apiCall(url);
+    }
+
+    public void getGIFsById(String ids){
+        String url = domain+"?api_key="+API_KEY+"&ids="+ids;
+        RequestQueue queue = Volley.newRequestQueue(context);
+        Log.d("ssss",url);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        EventBus.getDefault().post(new FavoritesEvent(response));
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error: ",error.getMessage());
+                    }
+                });
+        queue.add(jsonObjectRequest);
     }
 }
