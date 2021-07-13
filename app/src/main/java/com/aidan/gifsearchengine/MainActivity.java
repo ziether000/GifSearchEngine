@@ -14,6 +14,9 @@ import android.view.View;
 
 import com.google.android.material.tabs.TabLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 
 public class MainActivity extends AppCompatActivity {
     ViewPageAdapter viewPageAdapter;
@@ -26,12 +29,14 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.vp_fragment);
         tabLayout = findViewById(R.id.tab_layout);
         init();
-
     }
     public void init(){
         viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPageAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ResponseEvent event) {
+        Log.d("sss1","sss");
+    };
 }
